@@ -7,6 +7,7 @@ end_frame_num = 0
 frame_ctr = 0
 
 def decode_video():
+    print("decoding...")
     c = 0
     vidcap2 = cv2.VideoCapture('output.mov')
     ret, frame = vidcap2.read()
