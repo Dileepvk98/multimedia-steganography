@@ -23,6 +23,7 @@ Since only the last digit is being changed there is no visible loss/anomaly in t
 - cv2 
 - sys
 - math
+- scikit-video
 
 ## Usage
 
