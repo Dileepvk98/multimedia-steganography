@@ -2,7 +2,7 @@ from scipy.io import wavfile
 import numpy as np
 import cv2, sys, math
 
-NUM_OF_PIX_TO_ENC_PER_FRAME = 100
+NO_OF_SUB_PIX_ASCII_PER_FRAME = 100
 FRAME_CTR = 0
 
 class Video:
@@ -46,8 +46,8 @@ class Video:
         ret, frame = vidcap.read()
         while vidcap.isOpened() and ret:
             if i<len(self.info_lin):
-                enc_frame = self.encode_img_into_frame(frame, self.info_lin[i:i+NUM_OF_PIX_TO_ENC_PER_FRAME])
-                i+=NUM_OF_PIX_TO_ENC_PER_FRAME
+                enc_frame = self.encode_img_into_frame(frame, self.info_lin[i:i+NO_OF_SUB_PIX_ASCII_PER_FRAME])
+                i+=NO_OF_SUB_PIX_ASCII_PER_FRAME
                 self.end_frame+=1
                 out.write(enc_frame)
             else:
@@ -75,8 +75,8 @@ class Video:
             ret, frame = vidcap2.read()
             decoded_img = []
             while vidcap2.isOpened() and ret and c< self.end_frame:
-                for ctr in  range(NUM_OF_PIX_TO_ENC_PER_FRAME):
-                    print(frame[0][ctr])
+                for ctr in  range(NO_OF_SUB_PIX_ASCII_PER_FRAME):
+                    # print(frame[0][ctr])
                     d1 = frame[0][ctr][0]%10
                     d2 = frame[0][ctr][1]%10
                     d3 = frame[0][ctr][2]%10
