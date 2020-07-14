@@ -105,6 +105,11 @@ class Audio:
             # return img
             img = np.asarray(img)
             cv2.imwrite('decoded.png', img.reshape(self.info.shape[0], self.info.shape[1], self.info.shape[2]))
+            dec_img = cv2.imread("decoded.png",1)
+            print("\npress q while image window is selected to close")
+            cv2.imshow("decoded", dec_img)
+            cv2.waitKey(0)  
+            cv2.destroyAllWindows()  
 
         
         elif infotype=="text":
