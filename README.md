@@ -30,7 +30,7 @@ Since only the last digit is being changed there is no visible loss/anomaly in t
 
 - python audio.py image file_name.png/jpeg audio_file.wav
     
-## Contrainsts
+## Contraints
 - .wav format necessary as other formats use lossy compression
 
 ## Coming Soon
