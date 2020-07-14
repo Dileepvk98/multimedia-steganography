@@ -2,16 +2,12 @@ from scipy.io import wavfile
 import numpy as np
 import cv2, sys
 
-class Video:
-    pass
-
-
 class Audio:
     def __init__(self, infofile, infotype, aud_file):
         self.hideout_file = aud_file
         self.hideout = None
-        self.width = None
-        self.height = None
+        # self.width = None
+        # self.height = None
         self.hideout_lin = None
         self.rate = None
 
@@ -23,8 +19,8 @@ class Audio:
 
     def read_audio_hideout(self):
         self.rate, self.hideout = wavfile.read(self.hideout_file)
-        self.width = self.hideout.shape[0]
-        self.height = self.hideout.shape[1]
+        # self.width = self.hideout.shape[0]
+        # self.height = self.hideout.shape[1]
         self.hideout_lin = self.hideout.reshape(-1)
 
     def read_info(self):
@@ -96,6 +92,12 @@ class Audio:
         
         elif infotype=="text":
             pass
+
+# try:
+#     pic_file, aud_file = sys.argv[1], sys.argv[2]
+# except:
+#     print("usage :  python   audio_steg.py    pic-to-hide.jpg/png     audio-to-hide-pic-in.wav")
+#     sys.exit(2)
 
 a_obj = Audio("cloudimg.jpeg", "image", "avicii.wav")
 # a_obj = Audio("secret.txt", "text", "avicii.wav")
