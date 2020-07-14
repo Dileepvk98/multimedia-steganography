@@ -28,20 +28,32 @@ class Audio:
             self.info = cv2.imread(self.infofile,1)
             self.info_lin = self.info.reshape(-1)
         
-        # incomplete
         else:
             self.info = []
-            words = []
             with open(self.infofile, "r") as f1:
-                lines = f1.readlines()
-            
-            for line in lines:
-                words_in_line = line.split()
-                self.info.append(line)
-                print(words_in_line)
-            print(self.info, type(self.info))
-            # t = ''.join(str(ord(c)) for c in self.info)
-            # print(t)
+                data = f1.readlines()
+            self.info_lin = self.text_formatter(data)
+
+
+    def text_formatter(self, data):
+        # print(data)
+
+        lines = []
+        for line in data:
+            words = line.replace("\n","~").split()
+            lines.append(words)
+        # print(lines)  
+        
+        words_ascii = []
+        for line in lines:
+            for word in line:
+                for c in word:
+                    words_ascii.append(ord(c))
+                if ord(c) != ord('~'):
+                    words_ascii.append(ord(' '))
+        print(words_ascii)
+        return words_ascii
+    
 
     def hide_info(self):
         enc_wav, i = [], 0
@@ -68,11 +80,16 @@ class Audio:
                 d2+=10
             if d3 <= -32768:
                 d3+=10
+            # print(d1, d2, d3)
             enc_wav += [d1,d2,d3]
             i+=3
         enc_wav = np.asarray(enc_wav,dtype='int16')
         self.end_index = i
-        return np.concatenate((enc_wav,self.hideout_lin[i:]))
+        # return np.concatenate((enc_wav,self.hideout_lin[i:]))
+        enc_wav = np.concatenate((enc_wav,self.hideout_lin[i:]))
+        enc_wav = enc_wav.reshape(self.hideout.shape[0], self.hideout.shape[1])
+        wavfile.write('encoded.wav', self.rate, enc_wav)
+        print("encoded...")
 
 
     def decode_data(self, encoded_file, infotype):
@@ -91,7 +108,14 @@ class Audio:
 
         
         elif infotype=="text":
-            pass
+            text = []
+            i = 0
+            while i < self.end_index:
+                sub_ascii = abs(data[i])%10*100 + abs(data[i+1])%10*10 + abs(data[i+2])%10
+                text.append(chr(sub_ascii))
+                i+=3
+            text = ''.join(text).replace("~","\n")
+            print(text)
 
 # try:
 #     pic_file, aud_file = sys.argv[1], sys.argv[2]
@@ -99,10 +123,10 @@ class Audio:
 #     print("usage :  python   audio_steg.py    pic-to-hide.jpg/png     audio-to-hide-pic-in.wav")
 #     sys.exit(2)
 
-a_obj = Audio("cloudimg.jpeg", "image", "avicii.wav")
-# a_obj = Audio("secret.txt", "text", "avicii.wav")
+# a_obj = Audio("cloudimg.jpeg", "image", "avicii.wav")
+a_obj = Audio("secret.txt", "text", "avicii.wav")
 a_obj.read_audio_hideout()
 a_obj.read_info()
 a_obj.hide_info()
-a_obj.decode_data("encoded.wav", "image")
-# a_obj.decode_data("encoded.wav", "text")
+# a_obj.decode_data("encoded.wav", "image")
+a_obj.decode_data("encoded.wav", "text")
