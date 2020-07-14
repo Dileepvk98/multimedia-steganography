@@ -32,12 +32,13 @@ Since only the last digit is being changed there is no visible loss/anomaly in t
     
 ## Contraints
 - .wav format necessary as other formats use lossy compression
+- encoded img must be .png or any other lossless compression like .bmp, .raw
 
 ## Coming Soon
 
-- Fix text/image in Video (lossy compression issue)
 - Warn if the file to be hidden does not fit the hideout audio/video/image and give and option to continue with truncation.
 - UI
-- Text in Image
-- Video in video
 - Audio in audio
+> 
+- Fix text/image in Video (lossy compression issue)
+- Video in video
