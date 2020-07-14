@@ -40,7 +40,7 @@ class Video:
         frame_width = int(vidcap.get(3))
         frame_height = int(vidcap.get(4))
         print(frame_height, frame_width)
-        out = cv2.VideoWriter('output.mov', cv2.VideoWriter_fourcc('m','p','4','v'), 60, (frame_width, frame_height))
+        out = cv2.VideoWriter('encoded.mov', cv2.VideoWriter_fourcc('m','p','4','v'), 60, (frame_width, frame_height))
 
         i = 0
         ret, frame = vidcap.read()
@@ -71,11 +71,12 @@ class Video:
         print("decoding...")
         if infotype == "image":
             c = 0
-            vidcap2 = cv2.VideoCapture('output.mov')
+            vidcap2 = cv2.VideoCapture(encoded_file)
             ret, frame = vidcap2.read()
             decoded_img = []
             while vidcap2.isOpened() and ret and c< self.end_frame:
                 for ctr in  range(NUM_OF_PIX_TO_ENC_PER_FRAME):
+                    print(frame[0][ctr])
                     d1 = frame[0][ctr][0]%10
                     d2 = frame[0][ctr][1]%10
                     d3 = frame[0][ctr][2]%10
@@ -94,4 +95,4 @@ class Video:
 v_obj = Video("cloudimg.jpeg", "image", "flowers.mp4")
 v_obj.read_info()
 v_obj.hide_info()
-v_obj.decode_data("encoded.wav", "image")
+v_obj.decode_data("encoded.mov", "image")
