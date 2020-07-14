@@ -1,4 +1,4 @@
-Steganography program for hiding information in an Audio/Video file
+Steganography program for hiding information in an Audio/Video/Image file
 ===============================================================
 
 
@@ -35,7 +35,9 @@ Since only the last digit is being changed there is no visible loss/anomaly in t
 
 ## Coming Soon
 
+- Fix text/image in Video (lossy compression issue)
 - Warn if the file to be hidden does not fit the hideout audio/video/image and give and option to continue with truncation.
 - UI
+- Text in Image
 - Video in video
 - Audio in audio
