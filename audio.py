@@ -51,7 +51,7 @@ class Audio:
                     words_ascii.append(ord(c))
                 if ord(c) != ord('~'):
                     words_ascii.append(ord(' '))
-        print(words_ascii)
+        # print(words_ascii)
         return words_ascii
     
 
@@ -89,7 +89,7 @@ class Audio:
         enc_wav = np.concatenate((enc_wav,self.hideout_lin[i:]))
         enc_wav = enc_wav.reshape(self.hideout.shape[0], self.hideout.shape[1])
         wavfile.write('encoded.wav', self.rate, enc_wav)
-        print("encoded...")
+        print("encoded")
 
 
     def decode_data(self, encoded_file, infotype):
@@ -115,18 +115,31 @@ class Audio:
                 text.append(chr(sub_ascii))
                 i+=3
             text = ''.join(text).replace("~","\n")
-            print(text)
+            print("\ndecoded data :- \n","-"*50,"\n")
+            print(text,"\n\n","-"*50,"\n")
 
-# try:
-#     pic_file, aud_file = sys.argv[1], sys.argv[2]
-# except:
-#     print("usage :  python   audio_steg.py    pic-to-hide.jpg/png     audio-to-hide-pic-in.wav")
-#     sys.exit(2)
+try:
+    type_of, secret, aud_file = sys.argv[1], sys.argv[2], sys.argv[3]
+except:
+    print("usage : python audio.py type file-to-hide audio-to-hide-in.wav")
+    print("\ttype -> image or text")
+    print("\tfile to hide -> .png/jpg/jpeg or .txt/.csv")
+    print("\t.wav format necessary as other formats use compression causing loss of data")
+    sys.exit(2)
 
-# a_obj = Audio("cloudimg.jpeg", "image", "avicii.wav")
-a_obj = Audio("secret.txt", "text", "avicii.wav")
-a_obj.read_audio_hideout()
-a_obj.read_info()
-a_obj.hide_info()
-# a_obj.decode_data("encoded.wav", "image")
-a_obj.decode_data("encoded.wav", "text")
+
+if type_of == "image":
+    a_obj = Audio(secret, "image", aud_file)
+    a_obj.read_audio_hideout()
+    a_obj.read_info()
+    a_obj.hide_info()
+    a_obj.decode_data("encoded.wav", "image")
+elif type_of == "text":
+    a_obj = Audio(secret, "text", aud_file)
+    a_obj.read_audio_hideout()
+    a_obj.read_info()
+    a_obj.hide_info()
+    a_obj.decode_data("encoded.wav", "text")
+else:
+    print("invalid type/format")
+    exit()
