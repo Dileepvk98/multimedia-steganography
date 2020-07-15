@@ -3,16 +3,16 @@ import numpy as np
 import cv2, sys
 
 class Audio:
-    def __init__(self, infofile, infotype, aud_file):
-        self.hideout_file = aud_file
+    def __init__(self):
+        self.hideout_file = None
         self.hideout = None
         # self.width = None
         # self.height = None
         self.hideout_lin = None
         self.rate = None
 
-        self.infotype = infotype
-        self.infofile = infofile
+        self.infotype = None
+        self.infofile = None
         self.info = None
         self.info_lin = None
         self.end_index = 0;
@@ -28,7 +28,7 @@ class Audio:
             self.info = cv2.imread(self.infofile,1)
             self.info_lin = self.info.reshape(-1)
         
-        else:
+        elif self.infotype == "text":
             self.info = []
             with open(self.infofile, "r") as f1:
                 data = f1.readlines()
@@ -89,22 +89,34 @@ class Audio:
         enc_wav = np.concatenate((enc_wav,self.hideout_lin[i:]))
         enc_wav = enc_wav.reshape(self.hideout.shape[0], self.hideout.shape[1])
         wavfile.write('encoded.wav', self.rate, enc_wav)
-        print("encoded")
+
+        if self.infotype == "image":
+            key = str(self.end_index)+"."+self.infotype+"."+str(self.info.shape[0])+"."+str(self.info.shape[1])+"."+str(self.info.shape[2])
+        elif self.infotype == "text":
+            key = str(self.end_index)+"."+self.infotype+".0.0.0"
+        print("encoded\ndecode key : ", key)
 
 
-    def decode_data(self, encoded_file, infotype):
+    def decode_data(self, encoded_file, key):
         print("decoding...")
+        self.end_index, self.infotype, h, w, ch = key.split(".")
+        self.end_index = int(self.end_index)
+
+        print(self.infotype)
+        print(self.end_index)
+
         _, data = wavfile.read(encoded_file)
         data = data.reshape(-1)
-        if infotype == "image":
-            img, i = [], 0
+        if self.infotype == "image":
+            img = []
+            i = 0
             while i < self.end_index:
                 sub_pixel = abs(data[i])%10*100 + abs(data[i+1])%10*10 + abs(data[i+2])%10
                 img.append(sub_pixel)
                 i+=3
             # return img
             img = np.asarray(img)
-            cv2.imwrite('decoded.png', img.reshape(self.info.shape[0], self.info.shape[1], self.info.shape[2]))
+            cv2.imwrite('decoded.png', img.reshape(int(h), int(w), int(ch)))
             dec_img = cv2.imread("decoded.png",1)
             print("\npress q while image window is selected to close")
             cv2.imshow("decoded", dec_img)
@@ -112,7 +124,7 @@ class Audio:
             cv2.destroyAllWindows()  
 
         
-        elif infotype=="text":
+        elif self.infotype=="text":
             text = []
             i = 0
             while i < self.end_index:
@@ -123,28 +135,45 @@ class Audio:
             print("\ndecoded data :- \n","-"*50,"\n")
             print(text,"\n\n","-"*50,"\n")
 
-try:
-    type_of, secret, aud_file = sys.argv[1], sys.argv[2], sys.argv[3]
-except:
-    print("usage : python audio.py type file-to-hide audio-to-hide-in.wav")
-    print("\ttype -> image or text")
-    print("\tfile to hide -> .png/jpg/jpeg or .txt/.csv")
-    print("\t.wav format necessary as other formats use compression causing loss of data")
-    sys.exit(2)
 
-if __name__ == "__main__": 
-    if type_of == "image":
-        a_obj = Audio(secret, "image", aud_file)
-        a_obj.read_audio_hideout()
-        a_obj.read_info()
-        a_obj.hide_info()
-        a_obj.decode_data("encoded.wav", "image")
-    elif type_of == "text":
-        a_obj = Audio(secret, "text", aud_file)
-        a_obj.read_audio_hideout()
-        a_obj.read_info()
-        a_obj.hide_info()
-        a_obj.decode_data("encoded.wav", "text")
+if __name__ == "__main__":
+    a_obj = Audio()
+    try:
+        proc = sys.argv[1]
+    except:
+        print("usage : python audio.py encode type file-to-hide audio-to-hide-in.wav")
+        print("\tpython audio.py decode key encoded_file.wav")
+        print("\ttype -> image or text")
+        print("\tfile to hide -> .png/jpg/jpeg or .txt/.csv")
+        print("\t.wav format necessary as other formats use compression causing loss of data")
+        sys.exit(2)
+ 
+    if proc == "encode":
+        type_of = sys.argv[2]
+        secret, aud_file = sys.argv[3], sys.argv[4]
+        if type_of == "image":
+            a_obj.infofile = secret
+            a_obj.infotype = "image"
+            a_obj.hideout_file = aud_file
+
+            a_obj.read_audio_hideout()
+            a_obj.read_info()
+            a_obj.hide_info()
+        
+        elif type_of == "text":
+            a_obj.infofile = secret
+            a_obj.infotype = "text"
+            a_obj.hideout_file = aud_file
+            
+            a_obj.read_audio_hideout()
+            a_obj.read_info()
+            a_obj.hide_info()
+         
+    elif proc == "decode":
+        key, aud_file = sys.argv[2], sys.argv[3]
+        a_obj.hideout_file = aud_file
+        a_obj.decode_data(aud_file, key)
+
     else:
         print("invalid type/format")
         exit()

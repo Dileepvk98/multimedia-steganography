@@ -4,11 +4,11 @@ import cv2, sys, math
 
 
 class Image:
-    def __init__(self, infofile, img_file):
-        self.hideout_file = img_file
+    def __init__(self):
+        self.hideout_file = None
         self.hideout = None
         self.infotype = "text"
-        self.infofile = infofile
+        self.infofile = None
         self.info = None
         self.info_lin = None
         self.end_pixel = 0
@@ -53,13 +53,14 @@ class Image:
             self.end_pixel += 3
         cv2.imwrite("encoded.png", self.hideout)
         print("encoded")
+        print("decode key : ", self.end_pixel)
 
-    def decode_data(self, encoded_file):
+    def decode_data(self, encoded_file, key):
         print("decoding...")       
         text = []
         i = 0
         img = cv2.imread(encoded_file, 1).reshape(-1)
-        while i < self.end_pixel:
+        while i < key:
             sub_ascii = abs(img[i])%10*100 + abs(img[i+1])%10*10 + abs(img[i+2])%10
             text.append(chr(sub_ascii))
             i+=3
@@ -68,13 +69,20 @@ class Image:
         print(text,"\n\n","-"*50,"\n")
         
 try:
-    secret, img_file = sys.argv[1], sys.argv[2]
+    proc, secret, key, img_file = sys.argv[1], sys.argv[2], sys.argv[2], sys.argv[3]
 except:
-    print("usage : python image.py file.txt img-to-hide-in.png/jpeg")
+    print("usage : python image.py encode file.txt img-to-hide-in")
+    print("\tpython image.py decode key encoded.png")
     sys.exit(2)
 
 if __name__ == "__main__": 
-    i_obj = Image(secret, img_file)
-    i_obj.read_info()
-    i_obj.hide_info()
-    i_obj.decode_data("decoded.png")
+    i_obj = Image()
+    if proc == "encode":
+        i_obj.infofile = secret
+        i_obj.hideout_file = img_file
+        i_obj.read_info()
+        i_obj.hide_info()
+    
+    elif proc == "decode":
+        i_obj.hideout_file = img_file
+        i_obj.decode_data(img_file, int(key))
