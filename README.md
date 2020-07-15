@@ -7,6 +7,7 @@
 - cv2 
 - sys
 - math
+- scikit-video
 
 ## Usage
 
