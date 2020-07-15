@@ -73,7 +73,8 @@ except:
     print("usage : python image.py file.txt img-to-hide-in.png/jpeg")
     sys.exit(2)
 
-i_obj = Image(secret, img_file)
-i_obj.read_info()
-i_obj.hide_info()
-i_obj.decode_data("decoded.png")
+if __name__ == "__main__": 
+    i_obj = Image(secret, img_file)
+    i_obj.read_info()
+    i_obj.hide_info()
+    i_obj.decode_data("decoded.png")

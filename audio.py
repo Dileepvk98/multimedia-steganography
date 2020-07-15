@@ -132,19 +132,19 @@ except:
     print("\t.wav format necessary as other formats use compression causing loss of data")
     sys.exit(2)
 
-
-if type_of == "image":
-    a_obj = Audio(secret, "image", aud_file)
-    a_obj.read_audio_hideout()
-    a_obj.read_info()
-    a_obj.hide_info()
-    a_obj.decode_data("encoded.wav", "image")
-elif type_of == "text":
-    a_obj = Audio(secret, "text", aud_file)
-    a_obj.read_audio_hideout()
-    a_obj.read_info()
-    a_obj.hide_info()
-    a_obj.decode_data("encoded.wav", "text")
-else:
-    print("invalid type/format")
-    exit()
+if __name__ == "__main__": 
+    if type_of == "image":
+        a_obj = Audio(secret, "image", aud_file)
+        a_obj.read_audio_hideout()
+        a_obj.read_info()
+        a_obj.hide_info()
+        a_obj.decode_data("encoded.wav", "image")
+    elif type_of == "text":
+        a_obj = Audio(secret, "text", aud_file)
+        a_obj.read_audio_hideout()
+        a_obj.read_info()
+        a_obj.hide_info()
+        a_obj.decode_data("encoded.wav", "text")
+    else:
+        print("invalid type/format")
+        exit()
