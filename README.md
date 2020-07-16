@@ -4,13 +4,8 @@
 
 - numpy
 - scipy.io
-- cv2 
-- sys
-- math
+- cv2
 - scikit-video
-- uuid
-- datetime
-- os
 - flask
 
 ## Usage
