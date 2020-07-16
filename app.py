@@ -13,13 +13,8 @@ def index():
 
 @app.route('/encode', methods = ['POST'])
 def encode():
-
    delete_old_files()
-   audio = Audio()
-   image = Image()
-
    # check if wav or imf file --- incomplete
-
    if request.method == 'POST': 
       
       # file upload
@@ -28,23 +23,36 @@ def encode():
       f1.save(os.path.join("uploads",f1.filename))
       f2.save(os.path.join("uploads",f2.filename))
 
-      audio.hideout_file = "./uploads/"+f1.filename
-      audio.infofile = "./uploads/"+f2.filename
-      if f2.filename.split(".")[1] in img_formats:
-         audio.infotype = "image"
-      else:
-         audio.infotype = "text"
-      
-      audio.read_audio_hideout()
-      audio.read_info()
-      fn = audio.hide_info()
+      if f1.filename.split(".")[1] == "wav":
+         audio = Audio()
+         audio.hideout_file = "./uploads/"+f1.filename
+         audio.infofile = "./uploads/"+f2.filename
+         if f2.filename.split(".")[1] in img_formats:
+            audio.infotype = "image"
+         else:
+            audio.infotype = "text"
+         
+         audio.read_audio_hideout()
+         audio.read_info()
+         fn = audio.hide_info()
 
-      os.remove("uploads/"+f1.filename)
-      os.remove("uploads/"+f2.filename)
+         os.remove("uploads/"+f1.filename)
+         os.remove("uploads/"+f2.filename)
+         
+         return render_template("index.html",key=audio.decodekey, file2down=fn)
       
-      return render_template("index.html",key=audio.decodekey, file2down=fn)
-      
-      # return audio.decodekey
+      elif f1.filename.split(".")[1] in img_formats:
+         image = Image()
+         image.hideout_file = "./uploads/"+f1.filename
+         image.infofile = "./uploads/"+f2.filename
+         image.read_info()
+         fn = image.hide_info()
+
+         os.remove("uploads/"+f1.filename)
+         os.remove("uploads/"+f2.filename)
+
+         return render_template("index.html",key=image.end_pixel, file2down=fn)
+         
    return "Error"
 
 
@@ -66,7 +74,15 @@ def decode():
       f1 = request.files['dec_f1']  
       f1.save(os.path.join("uploads",f1.filename))
       key = request.form["dec_key"]
-      fn = audio.decode_data("./uploads/"+f1.filename, key)
+      
+      if f1.filename.split(".")[1] == "wav":
+         audio = Audio()
+         fn = audio.decode_data("./uploads/"+f1.filename, key)
+      
+      elif f1.filename.split(".")[1] in img_formats:
+         image = Image()
+         fn = image.decode_data("./uploads/"+f1.filename, int(key))
+      
       return send_file("uploads/"+fn, as_attachment=True)
 
    return "error"

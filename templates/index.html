@@ -49,9 +49,10 @@
                     <hr>
                     <h6 id="enc_status" ></h6>
                     {% if key %}
-                        <h6>File ready for download !</h6>
+                        <h5>File ready for download !</h5>
+                        <br>
+                        <h6 id="enc_key_field" >File Name : <b>{{ file2down }}</b></h6>
                         <h6 id="enc_key_field" >Decode Key : <b>{{ key }}</b></h6>
-                        <h6 id="enc_key_field" >File Name : <b>{{ file2down }}</b></h6>   
                     {% else %}
                         <h6 id="enc_key_field" >Decode Key : Not generated</h6>
                     {% endif %}
@@ -87,13 +88,7 @@
                     </form>
 
                     <hr>
-                    
-                    <!-- <form action="download" method="POST">
-                        <input type="hidden" id="fn2down2" name="fn2down2" value={{ file2down2 }}> 
-                        <button type="submit" class="btn btn-primary">Download</button>
-                    </form> -->
-                    
-                    <hr>
+
                 </div>
             </div>
         </div>
