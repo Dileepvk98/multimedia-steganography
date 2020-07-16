@@ -1,6 +1,8 @@
 from scipy.io import wavfile
 import numpy as np
 import cv2, sys
+import uuid
+
 
 class Audio:
     def __init__(self):
@@ -94,9 +96,12 @@ class Audio:
             key = str(self.end_index)+"."+self.infotype+"."+str(self.info.shape[0])+"."+str(self.info.shape[1])+"."+str(self.info.shape[2])
         elif self.infotype == "text":
             key = str(self.end_index)+"."+self.infotype+".0.0.0"
-        wavfile.write("uploads/"+key+".wav", self.rate, enc_wav)
+
         self.decodekey = key
+        fn = str(uuid.uuid4())+".wav"
+        wavfile.write("uploads/"+fn, self.rate, enc_wav)
         print("encoded\ndecode key : ", key)
+        return fn
 
 
     def decode_data(self, encoded_file, key):
@@ -169,7 +174,7 @@ if __name__ == "__main__":
             
             a_obj.read_audio_hideout()
             a_obj.read_info()
-            a_obj.hide_info()
+            _ = a_obj.hide_info()
          
     elif proc == "decode":
         key, aud_file = sys.argv[2], sys.argv[3]

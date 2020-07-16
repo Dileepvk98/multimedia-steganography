@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-md-6" style="background-color: cornsilk;">
                 
-                <h2>Encode</h2>
+                <h2 style="text-align: center; padding: 20px;">Encode</h2>
                 <div class="container mt-3">
                     <hr>
                     <form  action="encode"  method="POST" enctype = "multipart/form-data">
@@ -49,18 +49,52 @@
                     <hr>
                     <h6 id="enc_status" ></h6>
                     {% if key %}
-                        <h6 id="enc_key_field" >Decode Key : <b>{{ key }}</b></h6>    
+                        <h6>File ready for download !</h6>
+                        <h6 id="enc_key_field" >Decode Key : <b>{{ key }}</b></h6>
+                        <h6 id="enc_key_field" >File Name : <b>{{ file2down }}</b></h6>   
                     {% else %}
                         <h6 id="enc_key_field" >Decode Key : Not generated</h6>
                     {% endif %}
+                    <form action="download" method="POST">
+                        <input type="hidden" id="fn2down" name="fn2down" value={{ file2down }}> 
+                        <button type="submit" class="btn btn-primary">Download</button>
+                    </form>
                     
-                    <button type="submit" class="btn btn-primary" onclick="download()">Download</button>
                     <hr>
                 </div>
 
             </div>
+
             <div class="col-md-6" style="background-color: ghostwhite;">
-                <h2>Decode</h2>
+                <h2 style="text-align: center; padding: 20px;">Decode</h2>
+                <div class="container mt-3">
+                    <hr>
+                    <form  action="encode"  method="POST" enctype = "multipart/form-data">
+                    <!-- <form> -->
+                        <h6>Upload Encoded File :</h6>
+                        <div class="custom-file mb-3">
+                            <input type="file" class="custom-file-input ef1" id="customFile" name="enc_f1" required>
+                            <label class="custom-file-label" for="customFile">No file uploaded</label>
+                        </div>     
+                        <h6 id="encode-alert-1" style="color: red;"></h6>           
+                        <br><hr><br>
+                                                
+                        <input type="text" id="dec_key" class="form-control" name="dec_key" value="" placeholder="Enter Decode Key"> 
+                        
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-primary">Decode</button>
+                        </div>
+                    </form>
+
+                    <hr>
+                    
+                    <form action="download" method="POST">
+                        <input type="hidden" id="fn2down" name="fn2down" value={{ file2down }}> 
+                        <button type="submit" class="btn btn-primary">Download</button>
+                    </form>
+                    
+                    <hr>
+                </div>
             </div>
         </div>
     </div>
@@ -93,8 +127,8 @@
             obj.innerText = '';
             if(file_ext1 == "png" || file_ext1=="jpg" || file_ext1=="jpeg")
             {
-                if(file_ext2!="txt" && file_ext2!="csv")
-                obj.innerText = '.txt is required for Image steganography !';
+                if(file_ext2!="txt" && file_ext2!="csv" && file_ext2!="md" && file_ext2!="py" && file_ext2!="c")
+                obj.innerText = '.txt, .csv, .py etc is required for Image steganography! .pdf and other multimedia formats not supported';
             }
             var enc_type = document.getElementById("encoding-type");
             enc_type.innerText = "Type of encoding : "+file_ext2+" in "+file_ext1;
@@ -102,12 +136,13 @@
 
         function download(){
             var xhttp = new XMLHttpRequest();
-            var url = "/download";
-            // xhttp.onreadystatechange = function() {
-            //     if (this.readyState == 4 && this.status == 200) {
+            var fn = document.getElementById("fn2down").value;
+            var url = "/download/"+fn;
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
                     
-            //     }
-            // };
+                }
+            };
             xhttp.open("POST", url, true);
             xhttp.send();
         }
