@@ -12,13 +12,36 @@
   </head>
   <body>
     
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <a class="navbar-brand" href="#">Audio & Image Steganography</a>
+
+    <style>
+        html, body, .container-fluid {
+            height: 100%;
+        }
+        #navbar{
+            background-color: black;
+            color: white;
+            padding-top: 15px;
+        }
+
+        .btn{
+            border: 2px solid black;
+            font-weight: 600;
+        }
+
+        h6{
+            font-weight: bold;
+        }
+
+    </style>
+
+    <nav class="navbar" id="navbar">
+        <!-- <a class="navbar-brand" href="#">Audio & Image Steganography</a> -->
+        <h4>Multimedia Steganography</h4>
     </nav>
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-6" style="background-color: cornsilk;">
+            <div class="col-md-6" style="background-color: darkturquoise; border: 3px solid black; height: 100%;">
                 
                 <h2 style="text-align: center; padding: 20px;">Encode</h2>
                 <div class="container mt-3">
@@ -66,7 +89,7 @@
 
             </div>
 
-            <div class="col-md-6" style="background-color: ghostwhite;">
+            <div class="col-md-6" style="background-color: deepskyblue; border: 3px solid black; border-left: 0px;">
                 <h2 style="text-align: center; padding: 20px;">Decode</h2>
                 <div class="container mt-3">
                     <hr>
@@ -79,8 +102,10 @@
                         </div>     
                         <h6 id="decode-alert-1" style="color: red;"></h6>           
                         <br><hr><br>
-                                                
-                        <input type="text" id="dec_key" class="form-control" name="dec_key" value="" placeholder="Enter Decode Key"> 
+                        
+                        <h6>Enter Decode Key :</h6>
+                        <input type="text" id="dec_key" class="form-control" name="dec_key" value="" placeholder="Key"> 
+                        
                         
                         <div class="mt-3">
                             <button type="submit" class="btn btn-primary">Decode & Download</button>
