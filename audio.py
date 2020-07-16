@@ -16,6 +16,7 @@ class Audio:
         self.info = None
         self.info_lin = None
         self.end_index = 0;
+        self.decodekey = None
 
     def read_audio_hideout(self):
         self.rate, self.hideout = wavfile.read(self.hideout_file)
@@ -88,12 +89,13 @@ class Audio:
         # return np.concatenate((enc_wav,self.hideout_lin[i:]))
         enc_wav = np.concatenate((enc_wav,self.hideout_lin[i:]))
         enc_wav = enc_wav.reshape(self.hideout.shape[0], self.hideout.shape[1])
-        wavfile.write('encoded.wav', self.rate, enc_wav)
-
+        
         if self.infotype == "image":
             key = str(self.end_index)+"."+self.infotype+"."+str(self.info.shape[0])+"."+str(self.info.shape[1])+"."+str(self.info.shape[2])
         elif self.infotype == "text":
             key = str(self.end_index)+"."+self.infotype+".0.0.0"
+        wavfile.write("uploads/"+key+".wav", self.rate, enc_wav)
+        self.decodekey = key
         print("encoded\ndecode key : ", key)
 
 

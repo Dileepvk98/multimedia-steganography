@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Steganography</title>
+  </head>
+  <body>
+    
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <a class="navbar-brand" href="#">Audio & Image Steganography</a>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6" style="background-color: cornsilk;">
+                
+                <h2>Encode</h2>
+                <div class="container mt-3">
+                    
+                    <form action="/encode" method="POST" enctype = "multipart/form-data">
+                    <!-- <form> -->
+                        <h6>Upload Audio/Image :</h6>
+                        <div class="custom-file mb-3">
+                            <input type="file" class="custom-file-input ef1" id="customFile" name="enc_f1" required>
+                            <label class="custom-file-label" for="customFile">No file uploaded</label>
+                        </div>     
+                        <h6 id="encode-alert-1" style="color: red;"></h6>           
+                        <br><hr><br>
+                        <h6>Upload Secret File :</h6>
+                        <div class="custom-file mb-3">
+                            <input type="file" class="custom-file-input ef2" id="customFile2" name="enc_f2" required>
+                            <label class="custom-file-label" for="customFile">No file uploaded</label>
+                        </div>
+                        <h6 id="encode-alert-2" style="color: red;"></h6>           
+                        <br><hr><br>
+                        <h6 id="encoding-type">Type of encoding : None</h6>
+
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-primary" onclick='encode()'>Encode</button>
+                        </div>
+                    </form>
+
+                    <hr>
+                    <h6 id="enc_status" ></h6>
+                    <h6 id="enc_key_field" >Decode Key : Not generated</h6>
+                    <button type="submit" class="btn btn-primary">Download</button>
+                    <hr>
+                </div>
+
+            </div>
+            <div class="col-md-6" style="background-color: ghostwhite;">
+                <h2>Decode</h2>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- file upload -->
+    <script>
+        document.querySelector('.ef1').addEventListener('change',function(e){
+            var fileName = document.getElementById("customFile").files[0].name;
+            var nextSibling = e.target.nextElementSibling;
+            var obj = document.getElementById("encode-alert-1");
+            obj.innerText = '';
+            nextSibling.innerText = fileName;
+
+            var file_ext = fileName.split(".")[1]
+            if(file_ext != "wav" && file_ext != "png" && file_ext != "jpg" && file_ext != "jpeg")
+            {
+                obj.innerText = '.wav file is required for audio steganography & for image .png or .jpeg/jpg is required!';
+            }
+        })
+
+        document.querySelector('.ef2').addEventListener('change',function(e){
+            var fileName2 = document.getElementById("customFile2").files[0].name;
+            var nextSibling = e.target.nextElementSibling;
+            nextSibling.innerText = fileName2;
+            var file_ext2 = fileName2.split(".")[1]
+            var fileName1 = document.getElementById("customFile").files[0].name;
+            var file_ext1 = fileName1.split(".")[1]
+            var obj = document.getElementById("encode-alert-2");
+            obj.innerText = '';
+            if(file_ext1 == "png" || file_ext1=="jpg" || file_ext1=="jpeg")
+            {
+                if(file_ext2!="txt" && file_ext2!="csv")
+                obj.innerText = '.txt is required for Image steganography !';
+            }
+            var enc_type = document.getElementById("encoding-type");
+            enc_type.innerText = "Type of encoding : "+file_ext2+" in "+file_ext1;
+        })
+
+        function encode(){
+            var xhttp = new XMLHttpRequest();
+            var url = "/encode";
+            var key = document.getElementById("enc_key_field");
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                     key.innerText = "Decode Key : "+this.responseText;
+                }
+            };
+            xhttp.open("POST", url, true);
+            xhttp.send();
+        }
+
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -68,15 +68,14 @@ class Image:
         print("\ndecoded data :- \n","-"*50,"\n")
         print(text,"\n\n","-"*50,"\n")
         
-try:
-    proc, secret, key, img_file = sys.argv[1], sys.argv[2], sys.argv[2], sys.argv[3]
-except:
-    print("usage : python image.py encode file.txt img-to-hide-in")
-    print("\tpython image.py decode key encoded.png")
-    sys.exit(2)
-
 if __name__ == "__main__": 
     i_obj = Image()
+    try:
+        proc, secret, key, img_file = sys.argv[1], sys.argv[2], sys.argv[2], sys.argv[3]
+    except:
+        print("usage : python image.py encode file.txt img-to-hide-in")
+        print("\tpython image.py decode key encoded.png")
+        sys.exit(2)
     if proc == "encode":
         i_obj.infofile = secret
         i_obj.hideout_file = img_file
