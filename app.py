@@ -33,10 +33,16 @@ def encode():
       audio.read_info()
       audio.hide_info()
 
+      return render_template("index.html",key = audio.decodekey)
       # return send_file("uploads/"+audio.decodekey+".wav", as_attachment=True)
-      return audio.decodekey
-
+      # return audio.decodekey
    return "Error"
+
+
+@app.route('/download', methods = ['POST'])
+def download():
+   if request.method == 'POST':
+       
 
 if __name__ == '__main__':
    app.run(debug = True)
