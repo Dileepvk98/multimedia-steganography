@@ -69,29 +69,29 @@
                 <h2 style="text-align: center; padding: 20px;">Decode</h2>
                 <div class="container mt-3">
                     <hr>
-                    <form  action="encode"  method="POST" enctype = "multipart/form-data">
+                    <form  action="decode"  method="POST" enctype = "multipart/form-data">
                     <!-- <form> -->
                         <h6>Upload Encoded File :</h6>
                         <div class="custom-file mb-3">
-                            <input type="file" class="custom-file-input ef1" id="customFile" name="enc_f1" required>
+                            <input type="file" class="custom-file-input df1" id="customFile3" name="dec_f1" required>
                             <label class="custom-file-label" for="customFile">No file uploaded</label>
                         </div>     
-                        <h6 id="encode-alert-1" style="color: red;"></h6>           
+                        <h6 id="decode-alert-1" style="color: red;"></h6>           
                         <br><hr><br>
                                                 
                         <input type="text" id="dec_key" class="form-control" name="dec_key" value="" placeholder="Enter Decode Key"> 
                         
                         <div class="mt-3">
-                            <button type="submit" class="btn btn-primary">Decode</button>
+                            <button type="submit" class="btn btn-primary">Decode & Download</button>
                         </div>
                     </form>
 
                     <hr>
                     
-                    <form action="download" method="POST">
-                        <input type="hidden" id="fn2down" name="fn2down" value={{ file2down }}> 
+                    <!-- <form action="download" method="POST">
+                        <input type="hidden" id="fn2down2" name="fn2down2" value={{ file2down2 }}> 
                         <button type="submit" class="btn btn-primary">Download</button>
-                    </form>
+                    </form> -->
                     
                     <hr>
                 </div>
@@ -134,6 +134,21 @@
             enc_type.innerText = "Type of encoding : "+file_ext2+" in "+file_ext1;
         })
 
+
+        document.querySelector('.df1').addEventListener('change',function(e){
+            var fileName = document.getElementById("customFile3").files[0].name;
+            var nextSibling = e.target.nextElementSibling;
+            var obj = document.getElementById("decode-alert-1");
+            obj.innerText = '';
+            nextSibling.innerText = fileName;
+
+            var file_ext = fileName.split(".")[1]
+            if(file_ext != "wav" && file_ext != "png" && file_ext != "jpg" && file_ext != "jpeg")
+            {
+                obj.innerText = '.wav, .png or .jpeg/jpg is required!';
+            }
+        })
+
         function download(){
             var xhttp = new XMLHttpRequest();
             var fn = document.getElementById("fn2down").value;
@@ -146,37 +161,7 @@
             xhttp.open("POST", url, true);
             xhttp.send();
         }
-        // function encode(){
-            // var xhttp = new XMLHttpRequest();
-            // var url = "/encode";
-            // var key = document.getElementById("enc_key_field");
-            // xhttp.onreadystatechange = function() {
-            //     if (this.readyState == 4 && this.status == 200) {
-            //         key.innerText = "Decode Key : "+this.responseText;
-            //     }
-            // };
-            // xhttp.open("POST", url, true);
-            // xhttp.send();
-
-        //     var formData = new FormData();
-        //     var file1var = document.getElementById("customFile");
-        //     var file2var = document.getElementById("customFile2");
-        //     if(file1var.files && file1var.files.length == 1 && file2var.files && file2var.files.length == 1 ){
-        //         var file1 = file1var.files[0]
-        //         var file2 = file2var.files[0]
-        //         formData.set("enc_f1", file1 , file1.name);
-        //         formData.set("enc_f2", file2 , file2.name);
-        //     }
-            
-        //     var request = new XMLHttpRequest();
-        //     request.onreadystatechange = function() {
-        //         if (this.readyState == 4 && this.status == 200) {
-        //             key.innerText = "Decode Key : "+this.responseText;
-        //         }
-        //     };
-        //     request.open('POST', "http://localhost:8080/testMultipart");
-        //     request.send(formData);
-        // }
+        
 
     </script>
 

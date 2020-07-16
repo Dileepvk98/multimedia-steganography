@@ -4,9 +4,6 @@ from audio import Audio
 from image import Image
 from datetime import datetime
 
-audio = Audio()
-image = Image()
-
 app = Flask(__name__)
 img_formats = ["png", "jpg", "jpeg"]
 
@@ -18,8 +15,13 @@ def index():
 def encode():
 
    delete_old_files()
+   audio = Audio()
+   image = Image()
+
+   # check if wav or imf file --- incomplete
 
    if request.method == 'POST': 
+      
       # file upload
       f1 = request.files['enc_f1']  
       f2 = request.files['enc_f2']  
@@ -51,6 +53,23 @@ def download():
    if request.method == 'POST':
       fn = request.form["fn2down"]
       return send_file("uploads/"+fn, as_attachment=True)
+
+
+@app.route('/decode', methods = ['POST'])
+def decode():
+   delete_old_files()
+   audio = Audio()
+   image = Image()
+
+   if request.method == 'POST': 
+      # file upload
+      f1 = request.files['dec_f1']  
+      f1.save(os.path.join("uploads",f1.filename))
+      key = request.form["dec_key"]
+      fn = audio.decode_data("./uploads/"+f1.filename, key)
+      return send_file("uploads/"+fn, as_attachment=True)
+
+   return "error"
 
 
 def delete_old_files():

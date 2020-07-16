@@ -112,6 +112,7 @@ class Audio:
         print(self.infotype)
         print(self.end_index)
 
+        fn = ""
         _, data = wavfile.read(encoded_file)
         data = data.reshape(-1)
         if self.infotype == "image":
@@ -123,12 +124,13 @@ class Audio:
                 i+=3
             # return img
             img = np.asarray(img)
-            cv2.imwrite('decoded.png', img.reshape(int(h), int(w), int(ch)))
-            dec_img = cv2.imread("decoded.png",1)
-            print("\npress q while image window is selected to close")
-            cv2.imshow("decoded", dec_img)
-            cv2.waitKey(0)  
-            cv2.destroyAllWindows()  
+            cv2.imwrite('./uploads/decoded.png', img.reshape(int(h), int(w), int(ch)))
+            # dec_img = cv2.imread("decoded.png",1)
+            # print("\npress q while image window is selected to close")
+            # cv2.imshow("decoded", dec_img)
+            # cv2.waitKey(0)  
+            # cv2.destroyAllWindows()  
+            fn = "decoded.png"
 
         
         elif self.infotype=="text":
@@ -139,9 +141,12 @@ class Audio:
                 text.append(chr(sub_ascii))
                 i+=3
             text = ''.join(text).replace("~","\n")
+            with open("./uploads/decoded.txt", "w") as f2:
+                f2.write(text)
+            fn = "decoded.txt"
             print("\ndecoded data :- \n","-"*50,"\n")
             print(text,"\n\n","-"*50,"\n")
-
+        return fn
 
 if __name__ == "__main__":
     a_obj = Audio()
@@ -178,8 +183,8 @@ if __name__ == "__main__":
          
     elif proc == "decode":
         key, aud_file = sys.argv[2], sys.argv[3]
-        a_obj.hideout_file = aud_file
-        a_obj.decode_data(aud_file, key)
+        # a_obj.hideout_file = aud_file
+        _ = a_obj.decode_data(aud_file, key)
 
     else:
         print("invalid type/format")
