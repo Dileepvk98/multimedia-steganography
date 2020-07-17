@@ -169,18 +169,18 @@
             }
         })
 
-        function download(){
-            var xhttp = new XMLHttpRequest();
-            var fn = document.getElementById("fn2down").value;
-            var url = "/download/"+fn;
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
+        // function download(){
+        //     var xhttp = new XMLHttpRequest();
+        //     var fn = document.getElementById("fn2down").value;
+        //     var url = "/download/"+fn;
+        //     xhttp.onreadystatechange = function() {
+        //         if (this.readyState == 4 && this.status == 200) {
                     
-                }
-            };
-            xhttp.open("POST", url, true);
-            xhttp.send();
-        }
+        //         }
+        //     };
+        //     xhttp.open("POST", url, true);
+        //     xhttp.send();
+        // }
         
 
     </script>

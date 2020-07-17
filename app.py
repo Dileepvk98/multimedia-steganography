@@ -9,7 +9,7 @@ img_formats = ["png", "jpg", "jpeg"]
 
 @app.route('/')
 def index():
-   return render_template('index.html')
+   return render_template('index2.html')
 
 @app.route('/encode', methods = ['POST'])
 def encode():
@@ -18,8 +18,8 @@ def encode():
    if request.method == 'POST': 
       
       # file upload
-      f1 = request.files['enc_f1']  
-      f2 = request.files['enc_f2']  
+      f1 = request.files['f1']  
+      f2 = request.files['f2']  
       f1.save(os.path.join("uploads",f1.filename))
       f2.save(os.path.join("uploads",f2.filename))
 
@@ -39,7 +39,7 @@ def encode():
          os.remove("uploads/"+f1.filename)
          os.remove("uploads/"+f2.filename)
          
-         return render_template("index.html",key=audio.decodekey, file2down=fn)
+         return render_template("index2.html",key=audio.decodekey, file2down=fn)
       
       elif f1.filename.split(".")[1] in img_formats:
          image = Image()
@@ -51,7 +51,7 @@ def encode():
          os.remove("uploads/"+f1.filename)
          os.remove("uploads/"+f2.filename)
 
-         return render_template("index.html",key=image.end_pixel, file2down=fn)
+         return render_template("index2.html",key=image.end_pixel, file2down=fn)
          
    return "Error"
 
@@ -71,7 +71,7 @@ def decode():
 
    if request.method == 'POST': 
       # file upload
-      f1 = request.files['dec_f1']  
+      f1 = request.files['f1']  
       f1.save(os.path.join("uploads",f1.filename))
       key = request.form["dec_key"]
       
