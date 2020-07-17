@@ -27,6 +27,4 @@
 ## Coming Soon
 
 - Warn if the file to be hidden does not fit the hideout audio/video/image and give and option to continue with truncation.
-- Audio in audio
-- Fix text/image in Video (lossy compression issue)
-- Video in video
+- Fix text/image/audio in Video (lossy compression issue)
