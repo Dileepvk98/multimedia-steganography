@@ -9,7 +9,7 @@ img_formats = ["png", "jpg", "jpeg"]
 
 @app.route('/')
 def index():
-   return render_template('index2.html')
+   return render_template('index.html')
 
 @app.route('/encode', methods = ['POST'])
 def encode():
@@ -39,7 +39,7 @@ def encode():
          os.remove("uploads/"+f1.filename)
          os.remove("uploads/"+f2.filename)
          
-         return render_template("index2.html",key=audio.decodekey, file2down=fn)
+         return render_template("index.html",key=audio.decodekey, file2down=fn)
       
       elif f1.filename.split(".")[1] in img_formats:
          image = Image()
@@ -51,7 +51,7 @@ def encode():
          os.remove("uploads/"+f1.filename)
          os.remove("uploads/"+f2.filename)
 
-         return render_template("index2.html",key=image.end_pixel, file2down=fn)
+         return render_template("index.html",key=image.end_pixel, file2down=fn)
          
    return "Error"
 
