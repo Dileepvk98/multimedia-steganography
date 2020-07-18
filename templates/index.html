@@ -52,7 +52,7 @@
             font-weight: bold;
         }
 
-        #uploadsecret, #encoding-type,  #decode-key{
+        #decode-key{
             display: none;
         }
 
@@ -114,7 +114,7 @@
                                 <hr>
                                 <h6>Upload Secret File :</h6>
                                 <div class="custom-file mb-3">
-                                    <input type="file" class="custom-file-input ef2" id="customFile2" name="f2" required disabled>
+                                    <input type="file" class="custom-file-input ef2" id="customFile2" name="f2" required>
                                     <label class="custom-file-label" for="customFile">No file uploaded</label>
                                 </div>
                             </div>
@@ -134,7 +134,14 @@
                         </form>
     
                         <div id="down">
-                            {% if key %}
+                            {% if file2down == "SizeError" %}
+                                <hr>
+                                <h5 style="color: red;">Error !</h5>
+                                <h6 style="color: red;"><b>{{ key }}</b></h6>
+                                <hr>
+                            {% endif %} 
+
+                            {% if key and file2down != "SizeError" %}
                                 <hr style="width: 50%;">
                                 <h5>File ready for download !</h5>
                                 <br>

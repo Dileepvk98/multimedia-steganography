@@ -59,6 +59,10 @@ class Audio:
     
 
     def hide_info(self):
+
+        if len(self.info_lin)*3 > len(self.hideout_lin):
+            return "SizeError"
+
         enc_wav, i = [], 0
         print("encoding...")
         for sub_pixel_ascii in self.info_lin:

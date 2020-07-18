@@ -7,6 +7,7 @@ class Image:
     def __init__(self):
         self.hideout_file = None
         self.hideout = None
+        self.hideout_lin = None
         self.infotype = "text"
         self.infofile = None
         self.info = None
@@ -44,14 +45,33 @@ class Image:
 
     def hide_info(self):
         print("encoding...")
+
         self.hideout = cv2.imread(self.hideout_file, 1)
-        # print(self.info_lin)
+        # print(self.hideout.reshape(-1))
+        print(len(self.hideout.reshape(-1)))
+        print(len(self.info_lin))
+
+        if len(self.info_lin)*3 > len(self.hideout.reshape(-1)) :
+            return "SizeError"
+
+        self.hideout_lin = self.hideout.reshape(-1)
         fn = ""
-        for y in range(len(self.info_lin)):
-            self.hideout[0][y][2] = self.hideout[0,y,2]//10*10 + self.info_lin[y]%10
-            self.hideout[0][y][1] = self.hideout[0,y,1]//10*10 + self.info_lin[y]//10%10
-            self.hideout[0][y][0] = self.hideout[0,y,0]//10*10 + self.info_lin[y]//10//10%10
-            self.end_pixel += 3
+        # for y in range(len(self.info_lin)):
+        #     self.hideout[0][y][2] = self.hideout[0,y,2]//10*10 + self.info_lin[y]%10
+        #     self.hideout[0][y][1] = self.hideout[0,y,1]//10*10 + self.info_lin[y]//10%10
+        #     self.hideout[0][y][0] = self.hideout[0,y,0]//10*10 + self.info_lin[y]//10//10%10
+        #     self.end_pixel += 3
+
+        y = 0
+        i = 0
+        while y < len(self.info_lin):
+            self.hideout_lin[i] = self.hideout_lin[i] + self.info_lin[y]%10
+            self.hideout_lin[i+1] = self.hideout_lin[i+1] + self.info_lin[y]//10%10
+            self.hideout_lin[i+2] = self.hideout_lin[i+2] + self.info_lin[y]//10//10%10
+            y+=1
+            i+=3
+        self.end_pixel = i
+
         fn = str(uuid.uuid4())+".png"
         cv2.imwrite("uploads/"+fn, self.hideout)
         print("encoded")
@@ -70,9 +90,9 @@ class Image:
         text = ''.join(text).replace("~","\n")
         with open("./uploads/decoded.txt", "w") as f2:
             f2.write(text)
-        return "decoded.txt"
         print("\ndecoded data :- \n","-"*50,"\n")
         print(text,"\n\n","-"*50,"\n")
+        return "decoded.txt"
         
 if __name__ == "__main__": 
     i_obj = Image()

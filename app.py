@@ -38,6 +38,9 @@ def encode():
 
          os.remove("uploads/"+f1.filename)
          os.remove("uploads/"+f2.filename)
+
+         if fn == "SizeError":
+            return render_template("index.html",key="Secret File too large to be hidden in given Audio/Image file", file2down=fn)   
          
          return render_template("index.html",key=audio.decodekey, file2down=fn)
       
@@ -50,6 +53,9 @@ def encode():
 
          os.remove("uploads/"+f1.filename)
          os.remove("uploads/"+f2.filename)
+
+         if fn == "SizeError":
+            return render_template("index.html",key="Secret File too large to be hidden in given Media file", file2down=fn) 
 
          return render_template("index.html",key=image.end_pixel, file2down=fn)
          
