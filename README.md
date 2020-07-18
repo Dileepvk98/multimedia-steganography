@@ -27,6 +27,4 @@
 
 ## Coming Soon
 
-- Audio in audio
-- Fix text/image in Video (lossy compression issue)
-- Video in video
+- Fix text/image/audio in Video (lossy compression issue)
